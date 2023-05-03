@@ -129,6 +129,32 @@ Entwickle eine **Zielstruktur** um die genannten Anforderungen zu erfüllen.
 
 ```sql
 -- hier Zielstruktur eintragen
+CREATE TABLE unified.pizza_types (
+    category VARCHAR(69),
+    pizza_name VARCHAR(69),
+    ingredients VARCHAR(420),
+    pizza_type VARCHAR(69),
+    CONSTRAINT pk_pizza_types PRIMARY KEY(pizza_type)
+);
+
+CREATE TABLE unified.pizzas (
+    pizza_type VARCHAR(69),
+    pizza_size VARCHAR(3),
+    price FLOAT,
+    CONSTRAINT pk_pizzas PRIMARY KEY(pizza_type,pizza_size),
+    CONSTRAINT fk_pizza_types FOREIGN KEY(pizza_type) REFERENCES unified.pizza_types(pizza_type)
+);
+
+CREATE TABLE unified.order_details (
+    id INT,
+    order_id INT,
+    pizza_name VARCHAR(69),
+    pizza_size VARCHAR(3),
+    quantity INT,
+    CONSTRAINT pk_order_details PRIMARY KEY(id),
+    CONSTRAINT fk_order FOREIGN KEY(order_id) REFERENCES unified.orders(id),
+    CONSTRAINT fk_pizza FOREIGN KEY(pizza_name, pizza_size) REFERENCES unified.pizzas(pizza_type, pizza_size)
+);
 ```
 
 ## Unify insert
