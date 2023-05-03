@@ -190,7 +190,18 @@ INSERT INTO unified.snow ()
 	SELECT STR_TO_DATE(clean.snow.month), CAST(latitude AS FLOAT), CAST(longitude AS FLOAT), CAST(snow AS FLOAT);
 
 INSERT INTO unified.resorts ()
-	SELECT CAST(resort AS VARCHAR), CAST(latitude)
+	SELECT CAST(resort AS VARCHAR), CAST(latitude AS FLOAT), CAST(longitude AS FLOAT), 
+	CAST(country AS VARCHAR), CAST(price AS INT), CAST(season AS VARCHAR), 
+	CAST(highest_point AS INT), CAST(lowest_point AS INT), CAST(beginner_slopes AS INT), 
+	CAST(intermediate_slopes AS INT), CAST(difficult_slopes AS INT), CAST(total_slopes AS INT), 
+	CAST(longest_run AS INT), CAST(snow_cannons AS INT), CAST(surface_lifts AS INT), 
+	CAST(chair_lifts AS INT), CAST(gondola_lifts AS INT), CAST(total_lifts AS INT), 
+	CAST(lift_capacity AS INT), CAST(child_friendly AS BOOLEAN), CAST(snowparks AS BOOLEAN), 
+	CAST(nightskiing AS BOOLEAN), CAST(summer_skiing AS BOOLEAN)
+
+INSERT INTO unified.countries ()
+    SELECT CAST(country_name AS VARCHAR), CAST(continent AS VARCHAR)
+
 
 END //
 DELIMITER ;     

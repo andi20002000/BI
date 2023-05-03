@@ -66,12 +66,13 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE scrub_and_insert_a ()
 BEGIN
+SET SESSION SQL_MODE='ALLOW_INVALID_DATES';
 CREATE TABLE clean.snow AS (
 	SELECT *
 	FROM land.snow
 	WHERE land.snow.month REGEXP '^([1-9]|0[1-9]|1[012])/([1-9]|0[1-9]|[12][0-9]|3[01])/(19|20)[0-9][0-9]' AND month < CURDATE()
-		AND ABS(latitude) < 90 OR ABS(longitude) < 180
-		AND snow > 0 OR snow < 100
+		AND ABS(latitude) < 90 AND ABS(longitude) < 180
+		AND snow > 0 AND snow < 100
 );
 CREATE TABLE clean.resorts AS (
 	SELECT *
