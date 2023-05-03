@@ -145,6 +145,12 @@ CREATE TABLE unified.pizzas (
     CONSTRAINT fk_pizza_types FOREIGN KEY(pizza_type) REFERENCES unified.pizza_types(pizza_type)
 );
 
+CREATE TABLE unified.orders (
+    id INT,
+    order_time DATETIME,
+    CONSTRAINT pk_orders PRIMARY KEY(id)
+);
+
 CREATE TABLE unified.order_details (
     id INT,
     order_id INT,
