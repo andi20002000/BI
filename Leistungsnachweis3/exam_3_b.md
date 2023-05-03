@@ -79,6 +79,39 @@ Dafür kannst du die bisher entwickelten Funktionen `scrub_and_insert_b` und `fu
 
 ```sql
 -- PROCEDURE clean_insert_b
+DELIMITER //
+CREATE PROCEDURE land.clean_insert_b ()
+BEGIN
+
+CREATE TABLE clean.pizzas AS (
+    SELECT DISTINCT *
+    FROM land.pizzas
+    WHERE (size = 'S' OR size = 'M' OR size = 'L' OR size = 'XL' OR size = 'XXL')
+        AND price IS NOT NULL AND price > 0
+);
+
+CREATE TABLE clean.pizza_types AS (
+        SELECT DISTINCT REPLACE(REPLACE(category, 'KKKK', 'ck'), 'KK','') AS category , REPLACE(name, 'KKK', 'zz') AS name, REPLACE(ingredients, 'S.', 'Salami') as ingredients , pizza_type_id 
+    FROM land.pizza_types
+    WHERE category != "" AND category IS NOT NULL
+        AND name != "" AND name IS NOT NULL
+);
+CREATE TABLE clean.orders AS (
+    SELECT DISTINCT *
+    FROM land.orders
+);
+
+CREATE TABLE clean.order_details AS (
+    SELECT DISTINCT *
+    FROM land.order_details
+);
+
+UPDATE clean.pizzas 
+SET pizzas.pizza_type_id = REGEXP_REPLACE(pizza_id , '_xxl|_xl|_l|_m|_s', '')
+WHERE pizzas.pizza_id NOT LIKE concat('%',pizzas.pizza_type_id,'%');
+
+END //
+DELIMITER ;
 ```
 
 ## Zielstruktur definieren
