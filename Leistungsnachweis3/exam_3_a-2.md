@@ -190,20 +190,20 @@ INSERT INTO unified.snow
 	SELECT STR_TO_DATE(clean.snow.month, '%Y-%m-%d'), CAST(latitude AS FLOAT), CAST(longitude AS FLOAT), CAST(snow AS FLOAT)
 	FROM clean.snow;
 
-INSERT INTO unified.resorts (resort, latitude, longitude, country, price, season, highest_point, lowest_point, beginner_slopes, intermediate_slopes, difficult_slopes, total_slopes, longest_run, snow_cannons, surface_lifts, chair_lifts, gondola_lifts, total_lifts, lift_capacity, child_friendly, snowparks, nightskiing, summer_skiing)
-	SELECT CAST(resort AS VARCHAR(256)), CAST(latitude AS FLOAT), CAST(longitude AS FLOAT),
-	CAST(country AS VARCHAR(60)), CAST(price AS INT), CAST(season AS VARCHAR(256)), 
-	CAST('highest point' AS INT), CAST('lowest point' AS INT), CAST('beginner slopes' AS INT), 
-	CAST('intermediate slopes' AS INT), CAST('difficult slopes' AS INT), CAST('total slopes' AS INT), 
-	CAST('longest run' AS INT), CAST('snow cannons' AS INT), CAST('surface lifts' AS INT), 
-	CAST('chair lifts' AS INT), CAST('gondola_lifts' AS INT), CAST('total lifts' AS INT), 
-	CAST('lift capacity' AS INT), STRCMP('child friendly', 'yes'), STRCMP(snowparks, 'yes'), 
-	STRCMP(nightskiing, 'yes'), STRCMP('summer skiing', 'yes')
-	FROM clean.resorts;
-
 INSERT INTO unified.countries
-    SELECT CAST(country_name AS VARCHAR(60)), CAST(continent AS VARCHAR(20))
+    SELECT DISTINCT CAST(clean.resorts.Country AS VARCHAR(60)), CAST(clean.resorts .continent AS VARCHAR(20))
    	FROM clean.resorts;
+
+INSERT INTO unified.resorts (resort, latitude, longitude, country, price, season, highest_point, lowest_point, beginner_slopes, intermediate_slopes, difficult_slopes, total_slopes, longest_run, snow_cannons, surface_lifts, chair_lifts, gondola_lifts, total_lifts, lift_capacity, child_friendly, snowparks, nightskiing, summer_skiing)
+	SELECT CAST(clean.resorts.resort AS VARCHAR(256)), CAST(clean.resorts.Latitude AS FLOAT), CAST(clean.resorts.Longitude AS FLOAT),
+	CAST(clean.resorts.Country AS VARCHAR(60)), CAST(clean.resorts.Price AS INT), CAST(clean.resorts.Season AS VARCHAR(256)), 
+	CAST(clean.resorts.`Highest point` AS INT), CAST(clean.resorts.`Lowest point` AS INT), CAST(clean.resorts.`Beginner slopes` AS INT), 
+	CAST(clean.resorts.`Intermediate slopes` AS INT), CAST(clean.resorts.`Difficult slopes` AS INT), CAST(clean.resorts.`Total slopes` AS INT), 
+	CAST(clean.resorts.`Longest run` AS INT), CAST(clean.resorts.`Snow cannons` AS INT), CAST(clean.resorts.`Surface lifts` AS INT), 
+	CAST(clean.resorts.`Chair lifts` AS INT), CAST(clean.resorts.`Gondola lifts` AS INT), CAST(clean.resorts.`Total lifts` AS INT), 
+	CAST(clean.resorts.`Lift capacity` AS INT), STRCMP(clean.resorts.`Child friendly`, 'yes'), STRCMP(clean.resorts.snowparks, 'yes'), 
+	STRCMP(clean.resorts.nightskiing, 'yes'), STRCMP(clean.resorts.`Summer skiing`, 'yes')
+	FROM clean.resorts;
 
 
 END //
