@@ -150,7 +150,7 @@ CREATE TABLE unified.countries(
 );
 
 CREATE TABLE unified.resorts (
- 	id AUTO_INCREMENT INT,
+ 	id INT AUTO_INCREMENT,
  	resort VARCHAR(256),
  	latitude FLOAT,
  	longitude FLOAT,
@@ -174,11 +174,11 @@ CREATE TABLE unified.resorts (
  	snowparks BOOLEAN,
  	nightskiing BOOLEAN,
  	summer_skiing BOOLEAN,
- 	CONSTRAINT fk_country FOREIGN KEY(country) REFERENCES unified.countries(country_name)
+ 	CONSTRAINT fk_country FOREIGN KEY(country) REFERENCES unified.countries(country_name),
  	CONSTRAINT pk_resorts PRIMARY KEY(id)
 );
 
-CREATE TABLE unified.snow AS (
+CREATE TABLE unified.snow (
 	snow_month DATE,
 	latitude FLOAT,
 	longitude FLOAT,
@@ -186,23 +186,26 @@ CREATE TABLE unified.snow AS (
 	CONSTRAINT pk_snow PRIMARY KEY(snow_month, latitude, longitude)
 );
 
-INSERT INTO unified.snow () 
-	SELECT STR_TO_DATE(clean.snow.month), CAST(latitude AS FLOAT), CAST(longitude AS FLOAT), CAST(snow AS FLOAT);
+INSERT INTO unified.snow 
+	SELECT STR_TO_DATE(clean.snow.month, '%Y-%m-%d'), CAST(latitude AS FLOAT), CAST(longitude AS FLOAT), CAST(snow AS FLOAT)
+	FROM clean.snow;
 
-INSERT INTO unified.resorts ()
-	SELECT CAST(resort AS VARCHAR), CAST(latitude AS FLOAT), CAST(longitude AS FLOAT), 
-	CAST(country AS VARCHAR), CAST(price AS INT), CAST(season AS VARCHAR), 
-	CAST(highest_point AS INT), CAST(lowest_point AS INT), CAST(beginner_slopes AS INT), 
-	CAST(intermediate_slopes AS INT), CAST(difficult_slopes AS INT), CAST(total_slopes AS INT), 
-	CAST(longest_run AS INT), CAST(snow_cannons AS INT), CAST(surface_lifts AS INT), 
-	CAST(chair_lifts AS INT), CAST(gondola_lifts AS INT), CAST(total_lifts AS INT), 
-	CAST(lift_capacity AS INT), CAST(child_friendly AS BOOLEAN), CAST(snowparks AS BOOLEAN), 
-	CAST(nightskiing AS BOOLEAN), CAST(summer_skiing AS BOOLEAN)
+INSERT INTO unified.resorts (resort, latitude, longitude, country, price, season, highest_point, lowest_point, beginner_slopes, intermediate_slopes, difficult_slopes, total_slopes, longest_run, snow_cannons, surface_lifts, chair_lifts, gondola_lifts, total_lifts, lift_capacity, child_friendly, snowparks, nightskiing, summer_skiing)
+	SELECT CAST(resort AS VARCHAR(256)), CAST(latitude AS FLOAT), CAST(longitude AS FLOAT),
+	CAST(country AS VARCHAR(60)), CAST(price AS INT), CAST(season AS VARCHAR(256)), 
+	CAST('highest point' AS INT), CAST('lowest point' AS INT), CAST('beginner slopes' AS INT), 
+	CAST('intermediate slopes' AS INT), CAST('difficult slopes' AS INT), CAST('total slopes' AS INT), 
+	CAST('longest run' AS INT), CAST('snow cannons' AS INT), CAST('surface lifts' AS INT), 
+	CAST('chair lifts' AS INT), CAST('gondola_lifts' AS INT), CAST('total lifts' AS INT), 
+	CAST('lift capacity' AS INT), STRCMP('child friendly', 'yes'), STRCMP(snowparks, 'yes'), 
+	STRCMP(nightskiing, 'yes'), STRCMP('summer skiing', 'yes')
+	FROM clean.resorts;
 
-INSERT INTO unified.countries ()
-    SELECT CAST(country_name AS VARCHAR), CAST(continent AS VARCHAR)
+INSERT INTO unified.countries
+    SELECT CAST(country_name AS VARCHAR(60)), CAST(continent AS VARCHAR(20))
+   	FROM clean.resorts;
 
 
 END //
-DELIMITER ;     
+DELIMITER;
 ```
