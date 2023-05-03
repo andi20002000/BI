@@ -154,6 +154,7 @@ INSERT INTO unified.pizza_types
     SELECT category, name, ingredients, pizza_type_id
     FROM clean.pizza_types;
 
+
 CREATE TABLE unified.pizzas (
     pizza_type VARCHAR(69),
     pizza_size VARCHAR(3),
@@ -164,7 +165,8 @@ CREATE TABLE unified.pizzas (
 
 INSERT INTO unified.pizzas
     SELECT pizza_type_id, CAST(clean.pizzas.size AS VARCHAR(3)), price
-    FROM clean.pizzas;
+    FROM clean.pizzas
+    WHERE clean.pizzas.pizza_type_id IN (SELECT unified.pizza_types.pizza_type FROM unified.pizza_types);
 
 CREATE TABLE unified.orders (
     id INT,
@@ -189,7 +191,10 @@ CREATE TABLE unified.order_details (
 
 INSERT INTO unified.order_details 
     SELECT order_details_id, order_id, REGEXP_REPLACE(pizza_id , '_xxl|_xl|_l|_m|_s', ''), UPPER((REPLACE(REGEXP_SUBSTR(pizza_id, '_xxl|_xl|_l|_m|s'), '', ''))) , quantity
-    FROM clean.order_details;
+    FROM clean.order_details
+    WHERE clean.order_details.order_id IN (SELECT unified.orders.id FROM unified.orders)
+   	AND clean.order_details.pizza_name IN (SELECT unified.pizzas.pizza_type FROM unified.pizzas)
+    AND clean.order_details.pizza_size IN (SELECT unified.pizzas.pizza_size FROM unified.pizzas);
 
 END //
 DELIMITER ;
