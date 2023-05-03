@@ -138,4 +138,59 @@ Das heißt, die Daten von `clean` in die Zielstruktur von `unified` schreibt.
 
 ```sql
 -- PROCEDURE unify_insert_b
+DELIMITER //
+CREATE OR REPLACE PROCEDURE clean.unify_insert_b ()
+BEGIN
+
+CREATE TABLE unified.pizza_types (
+    category VARCHAR(69),
+    pizza_name VARCHAR(69),
+    ingredients VARCHAR(420),
+    pizza_type VARCHAR(69),
+    CONSTRAINT pk_pizza_types PRIMARY KEY(pizza_type)
+);
+
+INSERT INTO unified.pizza_types 
+    SELECT category, name, ingredients, pizza_type_id
+    FROM clean.pizza_types;
+
+CREATE TABLE unified.pizzas (
+    pizza_type VARCHAR(69),
+    pizza_size VARCHAR(3),
+    price FLOAT,
+    CONSTRAINT pk_pizzas PRIMARY KEY(pizza_type,pizza_size),
+    CONSTRAINT fk_pizza_types FOREIGN KEY(pizza_type) REFERENCES unified.pizza_types(pizza_type)
+);
+
+INSERT INTO unified.pizzas
+    SELECT pizza_type_id, CAST(clean.pizzas.size AS VARCHAR(3)), price
+    FROM clean.pizzas;
+
+CREATE TABLE unified.orders (
+    id INT,
+    order_time DATETIME,
+    CONSTRAINT pk_orders PRIMARY KEY(id)
+);
+
+INSERT INTO unified.orders
+    SELECT order_id, TIMESTAMP(clean.orders.date, clean.orders.time)
+    FROM clean.orders;
+
+CREATE TABLE unified.order_details (
+    id INT,
+    order_id INT,
+    pizza_name VARCHAR(69),
+    pizza_size VARCHAR(3),
+    quantity INT,
+    CONSTRAINT pk_order_details PRIMARY KEY(id),
+    CONSTRAINT fk_order FOREIGN KEY(order_id) REFERENCES unified.orders(id),
+    CONSTRAINT fk_pizza FOREIGN KEY(pizza_name, pizza_size) REFERENCES unified.pizzas(pizza_type, pizza_size)
+);
+
+INSERT INTO unified.order_details 
+    SELECT order_details_id, order_id, REGEXP_REPLACE(pizza_id , '_xxl|_xl|_l|_m|_s', ''), UPPER((REPLACE(REGEXP_SUBSTR(pizza_id, '_xxl|_xl|_l|_m|s'), '', ''))) , quantity
+    FROM clean.order_details;
+
+END //
+DELIMITER ;
 ```
