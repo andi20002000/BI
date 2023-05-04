@@ -130,15 +130,15 @@ Entwickle eine **Zielstruktur** um die genannten Anforderungen zu erfüllen.
 ```sql
 -- hier Zielstruktur eintragen
 CREATE TABLE unified.pizza_types (
-    category VARCHAR(69),
-    pizza_name VARCHAR(69),
+    category VARCHAR(70),
+    pizza_name VARCHAR(70),
     ingredients VARCHAR(420),
-    pizza_type VARCHAR(69),
+    pizza_type VARCHAR(70),
     CONSTRAINT pk_pizza_types PRIMARY KEY(pizza_type)
 );
 
 CREATE TABLE unified.pizzas (
-    pizza_type VARCHAR(69),
+    pizza_type VARCHAR(70),
     pizza_size VARCHAR(3),
     price FLOAT,
     CONSTRAINT pk_pizzas PRIMARY KEY(pizza_type,pizza_size),
@@ -154,7 +154,7 @@ CREATE TABLE unified.orders (
 CREATE TABLE unified.order_details (
     id INT,
     order_id INT,
-    pizza_name VARCHAR(69),
+    pizza_name VARCHAR(70),
     pizza_size VARCHAR(3),
     quantity INT,
     CONSTRAINT pk_order_details PRIMARY KEY(id),
@@ -175,10 +175,10 @@ CREATE OR REPLACE PROCEDURE clean.unify_insert_b ()
 BEGIN
 
 CREATE TABLE unified.pizza_types (
-    category VARCHAR(69),
-    pizza_name VARCHAR(69),
+    category VARCHAR(70),
+    pizza_name VARCHAR(70),
     ingredients VARCHAR(420),
-    pizza_type VARCHAR(69),
+    pizza_type VARCHAR(70),
     CONSTRAINT pk_pizza_types PRIMARY KEY(pizza_type)
 );
 
@@ -188,7 +188,7 @@ INSERT INTO unified.pizza_types
 
 
 CREATE TABLE unified.pizzas (
-    pizza_type VARCHAR(69),
+    pizza_type VARCHAR(70),
     pizza_size VARCHAR(3),
     price FLOAT,
     CONSTRAINT pk_pizzas PRIMARY KEY(pizza_type,pizza_size),
@@ -213,7 +213,7 @@ INSERT INTO unified.orders
 CREATE TABLE unified.order_details (
     id INT,
     order_id INT,
-    pizza_name VARCHAR(69),
+    pizza_name VARCHAR(70),
     pizza_size VARCHAR(3),
     quantity INT,
     CONSTRAINT pk_order_details PRIMARY KEY(id),
