@@ -131,6 +131,48 @@ Entwickle eine **Zielstruktur** um die genannten Anforderungen zu erfüllen.
 
 ```sql
 -- hier Zielstruktur eintragen
+CREATE TABLE unified.countries(
+	country_name VARCHAR(60),
+	continent VARCHAR(20),
+	CONSTRAINT pk_countries PRIMARY KEY(country_name)
+);
+
+CREATE TABLE unified.resorts (
+ 	id INT AUTO_INCREMENT,
+ 	resort VARCHAR(256),
+ 	latitude FLOAT,
+ 	longitude FLOAT,
+ 	country VARCHAR(60),
+ 	price INT,
+ 	season VARCHAR(256),
+ 	highest_point INT,
+ 	lowest_point INT,
+ 	beginner_slopes INT,
+ 	intermediate_slopes INT,
+ 	difficult_slopes INT,
+ 	total_slopes INT,
+ 	longest_run INT,
+ 	snow_cannons INT,
+ 	surface_lifts INT,
+ 	chair_lifts INT,
+ 	gondola_lifts INT,
+ 	total_lifts INT,
+ 	lift_capacity INT,
+ 	child_friendly BOOLEAN,
+ 	snowparks BOOLEAN,
+ 	nightskiing BOOLEAN,
+ 	summer_skiing BOOLEAN,
+ 	CONSTRAINT fk_country FOREIGN KEY(country) REFERENCES unified.countries(country_name),
+ 	CONSTRAINT pk_resorts PRIMARY KEY(id)
+);
+
+CREATE TABLE unified.snow (
+	snow_month DATE,
+	latitude FLOAT,
+	longitude FLOAT,
+	snow FLOAT,
+	CONSTRAINT pk_snow PRIMARY KEY(snow_month, latitude, longitude)
+);
 ```
 
 ## Unify insert
