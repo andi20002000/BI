@@ -184,7 +184,7 @@ Das heißt, die Daten von `clean` in die Zielstruktur von `unified` schreibt.
 DELIMITER //
 CREATE PROCEDURE unify_insert_a ()
 BEGIN
-	
+SET SESSION SQL_MODE='ALLOW_INVALID_DATES';
 CREATE TABLE unified.countries(
 	country_name VARCHAR(60),
 	continent VARCHAR(20),
