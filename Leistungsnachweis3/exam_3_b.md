@@ -225,8 +225,7 @@ INSERT INTO unified.order_details
     SELECT order_details_id, order_id, REGEXP_REPLACE(pizza_id , '_xxl|_xl|_l|_m|_s', ''), UPPER((REPLACE(REGEXP_SUBSTR(pizza_id, '_xxl|_xl|_l|_m|s'), '', ''))) , quantity
     FROM clean.order_details
     WHERE clean.order_details.order_id IN (SELECT unified.orders.id FROM unified.orders)
-   	AND clean.order_details.pizza_name IN (SELECT unified.pizzas.pizza_type FROM unified.pizzas)
-    AND clean.order_details.pizza_size IN (SELECT unified.pizzas.pizza_size FROM unified.pizzas);
+   	AND clean.order_details.pizza_name IN (SELECT unified.pizzas.pizza_type FROM unified.pizzas);
 
 END //
 DELIMITER ;
