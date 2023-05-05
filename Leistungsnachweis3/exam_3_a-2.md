@@ -95,19 +95,19 @@ CREATE TABLE clean.resorts AS (
         AND Continent IN ('Europe','North America', 'South America', 'Oceania', 'Asia')
 );
 
-UPDATE clean.snow
+UPDATE clean.resorts
 SET Country = "United Kingdom"
 WHERE Country LIKE "United Kingdmo";
 
-UPDATE clean.snow
+UPDATE clean.resorts
 SET Country = "Italy"
 WHERE Country LIKE "Italie";
 
-UPDATE clean.snow
+UPDATE clean.resorts
 SET Country = "France"
 WHERE Country LIKE "Fränze";
 
-UPDATE clean.snow
+UPDATE clean.resorts
 SET Country = "Italy"
 WHERE Country LIKE "I.";
 
