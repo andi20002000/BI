@@ -67,8 +67,14 @@ LIMIT 1;
   - Median aller Ressorts
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Country, AVG(price) as average_price
+FROM resorts
+WHERE price > 0
+GROUP BY Country
+ORDER BY price ASC
+
+-- Antwort: AVG: Georgia mit 14
+            Median: 
 ```
 
 - Welches Land hat die höchsten Preise?
@@ -76,8 +82,12 @@ LIMIT 1;
   - Median aller Ressorts
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Country, AVG(price) as average_price
+FROM resorts
+GROUP BY Country
+ORDER BY price DESC
+
+-- Antwort: AVG: United States mit 81,1667
 ```
 
 - Welcher Kontinent hat die günstigsten Preise?
@@ -85,8 +95,12 @@ LIMIT 1;
   - Median aller Ressorts
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Continent, AVG(price) as average_price
+FROM resorts
+GROUP BY Continent 
+ORDER BY price ASC
+
+-- Antwort: AVG: Europa mit 41,54
 ```
 
 - Welcher Kontinent hat die höchsten Preise?
@@ -94,50 +108,73 @@ LIMIT 1;
   - Median aller Ressorts
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Continent, AVG(price) as average_price
+FROM resorts
+GROUP BY Continent 
+ORDER BY price DESC
+
+-- Antwort: AVG: Oceania mit 63,3
 ```
 
 - Welches Ressort ist am besten für Anfänger geeignet?
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Resort, land.resorts.`Beginner slopes`
+FROM resorts
+ORDER BY land.resorts.`Beginner slopes` DESC
+
+-- Antwort: Alle Resorts am Skigebiet Les 3 Valle?es (Alle 312 einfache Slopes)
 ```
 
 - Welches Ressort ist am besten für Profis geeignet?
   
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Resort, land.resorts.`Difficult slopes` 
+FROM resorts
+ORDER BY land.resorts.`Difficult slopes` DESC
+
+-- Antwort: Big Sky Resort mit 126 schweren Slopes
 ```
 
 - Welches Ressort hat die Längste Abfahrt?
   
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Resort, land.resorts.`Longest run`  
+FROM resorts
+ORDER BY land.resorts.`Longest run` DESC
+
+-- Antwort: Zermatt - Matterhorn, Les Deux alpes, Alpe d'Huez, Bansko mit jeweils 16
 ```
 
 - Welches Ressort hat die meisten Lifts?
   
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Resort, land.resorts.`Total lifts`  
+FROM resorts
+ORDER BY land.resorts.`Total lifts` DESC
+
+-- Antwort: Les Gets, Avoriaz, Cha?tel mit jeweils 174 Lifts
 ```
 
 - Welches Ressort hat die wenigsten Lifts?
   
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Resort, land.resorts.`Total lifts`  
+FROM resorts
+WHERE `Total lifts` > 0
+ORDER BY land.resorts.`Total lifts` ASC
+
+-- Antwort: Fonna Glacier, Wasserngrat (Gstaad), Oppdal, Summit Ski Area at Mt. Hood mit jeweils 1 Lift
 ```
 
 - Größte Ressort? (Kombination aus Abfahrten `slopes` und Lifts `lifts`)
   
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Resort, (land.resorts.`Total slopes` + land.resorts.`Total lifts`) AS Summe
+FROM resorts
+ORDER BY Summe DESC
+
+-- Antwort: Courchevel, Saint Martin de Belleville, La Tania-Val Thorens, Val Thorens, Me?ribel, ?Les Menuires mit jeweils 765
 ```
 
 ### Snow
