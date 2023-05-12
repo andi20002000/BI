@@ -73,8 +73,14 @@ WHERE price > 0
 GROUP BY Country
 ORDER BY price ASC
 
+SELECT DISTINCT country, PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)
+OVER (PARTITION by country) AS median
+FROM resorts
+WHERE price > 0
+ORDER BY median ASC
+
 -- Antwort: AVG: Georgia mit 14
-            Median: 
+            Median: Georgia mit 14
 ```
 
 - Welches Land hat die höchsten Preise?
