@@ -23,8 +23,9 @@ Hierbei liegt der Fokus vor allem auf `SELECT` Statements.
 - Wie viele Ski Ressorts gibt es?
 
 ```sql
--- Query:
--- Antwort:
+-- Query: SELECT COUNT(land.resorts.Resort)
+          FROM resorts
+-- Antwort: 499
 ```
 
 - Welches Land hat die meisten Ski Ressorts?
