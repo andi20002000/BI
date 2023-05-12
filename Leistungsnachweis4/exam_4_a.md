@@ -23,30 +23,43 @@ Hierbei liegt der Fokus vor allem auf `SELECT` Statements.
 - Wie viele Ski Ressorts gibt es?
 
 ```sql
--- Query: SELECT COUNT(land.resorts.Resort)
-          FROM resorts
+SELECT COUNT(land.resorts.Resort)
+FROM resorts
+
 -- Antwort: 499
 ```
 
 - Welches Land hat die meisten Ski Ressorts?
 
 ```sql
--- Query:
--- Antwort:
+SELECT COUNT(land.resorts.Country), land.resorts.Country 
+FROM resorts
+GROUP BY Country 
+
+-- Antwort: Österreich mit 89 Resorts
 ```
 
 - Welches Ressort hat die günstigsten Preise?
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Resort, land.resorts.Price
+FROM resorts
+WHERE price > 0
+ORDER BY price ASC
+LIMIT 1;
+
+-- Antwort: Gudauri mit 14
 ```
 
 - Welches Ressort hat die höchsten Preise?
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Resort, land.resorts.Price 
+FROM resorts
+ORDER BY price DESC 
+LIMIT 1;
+
+-- Antwort: Beaver Creek
 ```
 
 - Welches Land hat die günstigsten Preise?
