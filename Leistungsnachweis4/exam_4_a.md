@@ -93,7 +93,14 @@ FROM resorts
 GROUP BY Country
 ORDER BY price DESC
 
+SELECT DISTINCT country, PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)
+OVER (PARTITION by country) AS median
+FROM resorts
+WHERE price > 0
+ORDER BY median DESC
+
 -- Antwort: AVG: United States mit 81,1667
+            Median: Australia mit 85,5
 ```
 
 - Welcher Kontinent hat die günstigsten Preise?
@@ -106,7 +113,14 @@ FROM resorts
 GROUP BY Continent 
 ORDER BY price ASC
 
+SELECT DISTINCT Continent , PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)
+OVER (PARTITION by Continent) AS median
+FROM resorts
+WHERE price > 0
+ORDER BY median ASC
+
 -- Antwort: AVG: Europa mit 41,54
+            Median mit 41
 ```
 
 - Welcher Kontinent hat die höchsten Preise?
@@ -119,7 +133,14 @@ FROM resorts
 GROUP BY Continent 
 ORDER BY price DESC
 
+SELECT DISTINCT Continent , PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)
+OVER (PARTITION by Continent) AS median
+FROM resorts
+WHERE price > 0
+ORDER BY median DESC
+
 -- Antwort: AVG: Oceania mit 63,3
+            Median: Oceania mit 74
 ```
 
 - Welches Ressort ist am besten für Anfänger geeignet?
@@ -190,8 +211,13 @@ ORDER BY Summe DESC
   - Median des Schneefalls
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.snow.Longitude, land.snow.Latitude, land.snow.Snow
+FROM land.snow
+GROUP BY Longitude + Latitude 
+ORDER BY AVG(land.snow.Snow) ASC
+
+-- Antwort: AVG: -155.875	19.625	mit 0.39
+                 -155.625	19.125	mit 0.39
 ```
 
 - Punkt mit dem meisten Schnee über den gesamten Zeitraum?
@@ -207,18 +233,28 @@ ORDER BY Summe DESC
 
 *Überlege dir nun 3 eigene Fragestellungen und beantworte diese selbst:*
 
-- Frage 1
+- Das Land mit den meisten Schneekanonen
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Country, land.resorts.`Snow cannons`
+FROM land.resorts
+GROUP BY Country
+ORDER BY land.resorts.`Snow cannons` DESC
+
+-- Antwort: France mit 1074
 ```
 
-- Frage 2
+- Resort mit dem größten Höhenunterschied zwischen höchstem und niedrigsten Punkt
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.resorts.Resort, (land.resorts.`Highest point` - land.resorts.`Lowest point`) AS Diff
+FROM land.resorts
+ORDER BY Diff DESC
+
+-- Antwort: Verbier (4 Valle?es) mit 2509
+            Nendaz (4 Valle?es) mit 2509
+            Thyon (4 Valle?es) mit 2509
+            Veysonnaz (4 Valle?es) mit 2509
 ```
 
 - Frage 3
