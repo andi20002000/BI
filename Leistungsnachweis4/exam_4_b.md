@@ -23,6 +23,16 @@ Hierbei liegt der Fokus vor allem auf `SELECT` Statements.
 ### Normale Auswertung
 
 - Wie viele Kunden haben wir jeden Tag?
+
+```sql
+SELECT land.orders.`date` , COUNT(land.orders.order_id) AS datesum
+FROM land.orders
+GROUP BY land.orders.`date`
+ORDER BY datesum DESC
+
+-- Antwort: 
+```
+
 - Besitzt die Pizzeria Stoßzeiten?
   - Bei welchen Uhrzeiten handelt es sich um Stoßzeiten?
 
