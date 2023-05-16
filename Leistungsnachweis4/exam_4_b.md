@@ -37,6 +37,16 @@ ORDER BY datesum DESC
   - Bei welchen Uhrzeiten handelt es sich um Stoßzeiten?
 
 ```sql
+-- Number of customers per day
+SELECT land.orders.date, COUNT(orders.order_id) AS num_customers
+FROM land.orders
+GROUP BY orders.date;
+
+-- Busiest hours
+SELECT HOUR(land.orders.time) AS hour, COUNT(land.orders.order_id) AS num_orders
+FROM land.orders
+GROUP BY HOUR(land.orders.time)
+ORDER BY num_orders DESC;
 -- Query:
 -- Antwort:
 ```
