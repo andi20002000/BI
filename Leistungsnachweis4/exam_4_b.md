@@ -69,7 +69,8 @@ FROM (
 2.2773
 
 -- Median number of pizzas per order  ###########Funktioniert nicht
-SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY num_pizzas) OVER (PARTITION by order_id) AS median_pizzas_per_order
+SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY num_pizzas) 
+OVER (PARTITION by num_pizzas) AS median_pizzas_per_order
 FROM (
   SELECT order_id, COUNT(*) AS num_pizzas
   FROM land.orders
