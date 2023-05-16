@@ -37,18 +37,19 @@ ORDER BY datesum DESC
   - Bei welchen Uhrzeiten handelt es sich um Stoßzeiten?
 
 ```sql
--- Number of customers per day
-SELECT land.orders.date, COUNT(orders.order_id) AS num_customers
-FROM land.orders
-GROUP BY orders.date;
-
--- Busiest hours
+-- Query:
 SELECT HOUR(land.orders.time) AS hour, COUNT(land.orders.order_id) AS num_orders
 FROM land.orders
 GROUP BY HOUR(land.orders.time)
 ORDER BY num_orders DESC;
--- Query:
 -- Antwort:
+12 Uhr 2520 Kunden
+13 Uhr 2455 Kunden
+18 Uhr 2399 Kunden
+17 Uhr 2336 Kunden
+19 Uhr 2009 Kunden
+16 Uhr 1920 Kunden
+20 Uhr 1642 Kunden
 ```
 
 - Wie viele Pizzas sind üblicherweise in einer Bestellung?
@@ -57,19 +58,21 @@ ORDER BY num_orders DESC;
 
 ```sql
 -- Query:
--- Average number of pizzas per order not TESTESTEST
+-- Average number of pizzas per order
 SELECT AVG(num_pizzas) AS avg_pizzas_per_order
 FROM (
   SELECT order_id, COUNT(*) AS num_pizzas
-  FROM orders
+  FROM land.order_details
   GROUP BY order_id
 ) AS pizza_counts;
+-- Antwort:
+2.2773
 
--- Median number of pizzas per order
-SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY num_pizzas) AS median_pizzas_per_order
+-- Median number of pizzas per order  ###########Funktioniert nicht
+SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY num_pizzas) OVER (PARTITION by order_id) AS median_pizzas_per_order
 FROM (
   SELECT order_id, COUNT(*) AS num_pizzas
-  FROM orders
+  FROM land.orders
   GROUP BY order_id
 ) AS pizza_counts;
 -- Antwort:
@@ -81,6 +84,7 @@ FROM (
 
 ```sql
 -- Query:
+
 -- Antwort:
 ```
 
