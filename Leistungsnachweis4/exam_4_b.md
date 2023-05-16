@@ -57,6 +57,21 @@ ORDER BY num_orders DESC;
 
 ```sql
 -- Query:
+-- Average number of pizzas per order not TESTESTEST
+SELECT AVG(num_pizzas) AS avg_pizzas_per_order
+FROM (
+  SELECT order_id, COUNT(*) AS num_pizzas
+  FROM orders
+  GROUP BY order_id
+) AS pizza_counts;
+
+-- Median number of pizzas per order
+SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY num_pizzas) AS median_pizzas_per_order
+FROM (
+  SELECT order_id, COUNT(*) AS num_pizzas
+  FROM orders
+  GROUP BY order_id
+) AS pizza_counts;
 -- Antwort:
 ```
 
