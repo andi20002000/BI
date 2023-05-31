@@ -211,13 +211,19 @@ ORDER BY Summe DESC
   - Median des Schneefalls
 
 ```sql
-SELECT land.snow.Longitude, land.snow.Latitude, land.snow.Snow
+SELECT land.snow.Longitude, land.snow.Latitude, AVG(land.snow.Snow)
 FROM land.snow
 GROUP BY Longitude + Latitude 
 ORDER BY AVG(land.snow.Snow) ASC
 
--- Antwort: AVG: -155.875	19.625	mit 0.39
-                 -155.625	19.125	mit 0.39
+SELECT land.snow.Longitude, land.snow.Latitude, PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY land.snow.Snow)
+OVER (PARTITION by Latitude + Latitude) AS median
+FROM land.snow
+GROUP BY Longitude, Latitude 
+ORDER BY median ASC
+
+-- Antwort: AVG: -155.875	19.625	0.9166666666666666
+--       Median: 
 ```
 
 - Punkt mit dem meisten Schnee über den gesamten Zeitraum?
@@ -225,8 +231,13 @@ ORDER BY AVG(land.snow.Snow) ASC
   - Median des Schneefalls
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.snow.Longitude, land.snow.Latitude, AVG(land.snow.Snow)
+FROM land.snow
+GROUP BY Longitude + Latitude 
+ORDER BY AVG(land.snow.Snow) DESC
+
+-- Antwort: AVG: 179.875	68.875	100.0
+--       Median:
 ```
 
 ### Eigene Fragestellungen
@@ -244,7 +255,7 @@ ORDER BY land.resorts.`Snow cannons` DESC
 -- Antwort: France mit 1074
 ```
 
-- Resort mit dem größten Höhenunterschied zwischen höchstem und niedrigsten Punkt
+- Resort mit dem größten Höhenunterschied zwischen höchstem und niedrigstem Punkt
 
 ```sql
 SELECT land.resorts.Resort, (land.resorts.`Highest point` - land.resorts.`Lowest point`) AS Diff
