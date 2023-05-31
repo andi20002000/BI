@@ -30,7 +30,7 @@ FROM land.orders
 GROUP BY land.orders.`date`
 ORDER BY datesum DESC
 
--- Antwort: 
+-- Antwort: 115 Kunden
 ```
 
 - Besitzt die Pizzeria Stoßzeiten?
@@ -76,7 +76,7 @@ FROM (
   FROM land.orders
   GROUP BY order_id
 ) AS pizza_counts;
--- Antwort:
+-- Antwort: ???
 ```
 
 - Wie viel Geld hat die Pizzeria verdient?
@@ -122,6 +122,19 @@ Arbeite dich mit folgender URL in Window-Functions ein: [Window Functions Overvi
 2. Berechne die Differenz des Umsatzes zum Vortag
 
 ```sql
--- Query:
--- Antwort:
+SELECT orders.`date`, SUM(order_details.quantity * pizzas.price) OVER (PARTITION BY orders.`date`) AS daily_revenue
+FROM land.orders
+JOIN land.order_details ON orders.order_id = order_details.order_id
+JOIN land.pizzas ON order_details.pizza_id = pizzas.pizza_id;
+
+SELECT date, daily_revenue, daily_revenue - LAG(daily_revenue) OVER (ORDER BY date) AS revenue_diff
+FROM (
+  SELECT land.orders.`date`, SUM(order_details.quantity * pizzas.price) AS daily_revenue
+  FROM land.orders
+  JOIN land.order_details ON orders.order_id = order_details.order_id
+  JOIN land.pizzas ON order_details.pizza_id = pizzas.pizza_id
+  GROUP BY date
+) AS subquery;
+
+-- Antwort: NIX ANTWORT... KAPUTT
 ```
