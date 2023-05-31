@@ -80,7 +80,7 @@ WHERE price > 0
 ORDER BY median ASC
 
 -- Antwort: AVG: Georgia mit 14
-            Median: Georgia mit 14
+--          Median: Georgia mit 14
 ```
 
 - Welches Land hat die höchsten Preise?
@@ -100,7 +100,7 @@ WHERE price > 0
 ORDER BY median DESC
 
 -- Antwort: AVG: United States mit 81,1667
-            Median: Australia mit 85,5
+--          Median: Australia mit 85,5
 ```
 
 - Welcher Kontinent hat die günstigsten Preise?
@@ -120,7 +120,7 @@ WHERE price > 0
 ORDER BY median ASC
 
 -- Antwort: AVG: Europa mit 41,54
-            Median mit 41
+--          Median mit 41
 ```
 
 - Welcher Kontinent hat die höchsten Preise?
