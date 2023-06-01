@@ -250,7 +250,7 @@ ORDER BY AVG(land.snow.Snow) DESC
 SELECT land.resorts.Country, land.resorts.`Snow cannons`
 FROM land.resorts
 GROUP BY Country
-ORDER BY land.resorts.`Snow cannons` DESC
+ORDER BY land.resorts.`Snow cannons` DESC;
 
 -- Antwort: France mit 1074
 ```
@@ -260,7 +260,7 @@ ORDER BY land.resorts.`Snow cannons` DESC
 ```sql
 SELECT land.resorts.Resort, (land.resorts.`Highest point` - land.resorts.`Lowest point`) AS Diff
 FROM land.resorts
-ORDER BY Diff DESC
+ORDER BY Diff DESC;
 
 -- Antwort: Verbier (4 Valle?es) mit 2509
             Nendaz (4 Valle?es) mit 2509
@@ -268,11 +268,19 @@ ORDER BY Diff DESC
             Veysonnaz (4 Valle?es) mit 2509
 ```
 
-- Frage 3
+- Die am nördlichst gelegenen Resorts pro Kontinent
 
 ```sql
--- Query:
+SELECT ID, Resort, Longitude, Country, Continent, MIN(Latitude) 
+FROM land.resorts
+GROUP BY Continent;
+
 -- Antwort:
+83	Niseko	140.6873034	Japan	Asia	33.9721286
+1	Hemsedal	8.38348693	Norway	Europe	37.0957512
+4	Red Mountain Resort-Rossland	-117.8462801	Canada	North America	32.7558392
+7	Porter	176.8766681	New Zealand	Oceania	-45.0549597
+8	Nevados de Chilla?n	-72.0718055	Chile	South America	-41.16556
 ```
 
 ### Ressort + Snow
