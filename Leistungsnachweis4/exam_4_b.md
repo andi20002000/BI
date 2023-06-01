@@ -85,8 +85,20 @@ FROM (
 
 ```sql
 -- Query:
+SELECT SUM(quantity * price) AS Gesamtverdienst
+FROM land.orders
+JOIN land.order_details ON orders.order_id = order_details.order_id
+JOIN land.pizzas ON order_details.pizza_id = pizzas.pizza_id
+WHERE EXTRACT(YEAR FROM date) = 2015;
 
--- Antwort:
+SELECT EXTRACT(MONTH FROM land.order.`date`) AS Monat, SUM(quantity * price) AS Monatlicher_Verdienst
+FROM orders
+JOIN order_details ON orders.order_id = order_details.order_id
+JOIN pizzas ON order_details.pizza_id = pizzas.pizza_id
+GROUP BY month
+ORDER BY month;
+
+-- Antwort: Zu Lange Wartezeit
 ```
 
 - Welche Pizzas sind
@@ -101,8 +113,58 @@ FROM (
     - am Unbeliebtesten
 
 ```sql
--- Query:
--- Antwort:
+SELECT land.pizza_types.category, COUNT(*) AS am_beliebtesten
+FROM land.pizzas
+NATURAL JOIN land.order_details od 
+NATURAL JOIN land.pizza_types
+GROUP BY category
+ORDER BY order_count DESC;
+-- Antwort: Classic ist am beliebtesten
+
+SELECT land.pizza_types.category, COUNT(*) AS am_beliebtesten
+FROM land.pizzas
+NATURAL JOIN land.order_details od 
+NATURAL JOIN land.pizza_types
+GROUP BY category
+ORDER BY order_count ASC;
+-- Antwort: Chicken ist am unbeliebtesten
+
+--------------
+
+SELECT land.pizza_types.pizza_type_id AS pizza_type, COUNT(*) AS order_count
+FROM land.pizzas
+NATURAL JOIN land.order_details od 
+NATURAL JOIN land.pizza_types
+GROUP BY category, name
+ORDER BY category, order_count DESC;
+-- Antwort: classic_dlx ist am beliebtesten
+
+SELECT land.pizza_types.pizza_type_id AS pizza_type, COUNT(*) AS order_count
+FROM land.pizzas
+NATURAL JOIN land.order_details od 
+NATURAL JOIN land.pizza_types
+GROUP BY category, name
+ORDER BY category, order_count ASC;
+-- Antwort: brie_carre ist am unbeliebtesten
+
+--------------
+
+SELECT land.order_details.pizza_id AS pizza, COUNT(*) AS order_count
+FROM land.order_details
+NATURAL JOIN land.pizza_types
+NATURAL JOIN land.pizzas
+GROUP BY pizza
+ORDER BY order_count DESC;
+-- Antwort: big_meat_s ist am beliebtesten
+
+SELECT land.order_details.pizza_id AS pizza, COUNT(*) AS order_count
+FROM land.order_details
+NATURAL JOIN land.pizza_types
+NATURAL JOIN land.pizzas
+GROUP BY pizza
+ORDER BY order_count ASC;
+-- Antwort: the_greek_xxl ist am unbeliebtesten
+
 ```
 
 ### Window Functions
