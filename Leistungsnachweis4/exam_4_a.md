@@ -303,12 +303,7 @@ GROUP BY Continent;
 
 Geopunkte werden wie folgt definiert:
 
-```sql
--- create sql point
-POINT(longitude,latitude) -- POINT(Längengrad, Breitengrad)
-POINT(13.404954,52.520007), -- Berlin
-POINT(11.425754,48.766535) -- Ingolstadt
-```
+
 
 Die Distanz zwischen zwei Punkten wird näherungsweise auf einer Sphere (= Kugel) berechnet.
 > Hinweis: Die Distanz zwischen zwei GPS-Punkten wird nicht über die euklidische Distanz berechnet.  
@@ -348,3 +343,12 @@ Das Ergebnis für 10 exemplarische Ressorts sieht wie folgt aus:
 | 8   | Nevados de Chilla?n               | Chile       | South America | -36.613844   | -72.0718055  | POINT (-71.375 -36.875) |
 | 9   | Hochschwarzeck                    | Germany     | Europe        | 47.6283728   | 12.9205276   | POINT (12.875 47.625)   |
 | 10  | Rossfeld - Berchtesgaden - Oberau | Germany     | Europe        | 47.6513062   | 13.0589774   | POINT (13.125 47.625)   |
+
+
+```sql
+SELECT r.Resort, r.Latitude, r.Longitude, POINT(r.Longitude, r.Latitude) as Resort_Location, 
+    (SELECT min(ST_Distance_Sphere(POINT(r.Longitude, r.Latitude), POINT(s.Longitude, s.Latitude))) from land.snow AS s) as Minimum_distance,
+    (SELECT POINT(s.Longitude, s.Latitude) from land.snow AS s
+    WHERE (ST_Distance_Sphere(POINT(r.Longitude, r.Latitude), POINT(s.Longitude, s.Latitude)) = Minimum_distance))
+FROM land.resorts AS r
+```
