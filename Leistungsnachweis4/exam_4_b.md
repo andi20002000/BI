@@ -198,5 +198,5 @@ FROM (
   GROUP BY date
 ) AS subquery;
 
--- Antwort: NIX ANTWORT... KAPUTT
+-- Antwort: 
 ```
